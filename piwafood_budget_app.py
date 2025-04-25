@@ -76,6 +76,9 @@ st.markdown("""
 # Huvudrubrik
 st.markdown("<h1 class='main-header'>PiwaFood Budgetprognosverktyg</h1>", unsafe_allow_html=True)
 
+# Definiera container för meddelanden
+message_container = st.container()
+
 # Sidofält för kontroller och filuppladdning
 with st.sidebar:
     st.markdown("<h2 class='sub-header'>Inställningar</h2>", unsafe_allow_html=True)
