@@ -80,9 +80,9 @@ st.markdown("<h1 class='main-header'>PiwaFood Budgetprognosverktyg</h1>", unsafe
 with st.sidebar:
     st.markdown("<h2 class='sub-header'>Inställningar</h2>", unsafe_allow_html=True)
     
-    st.markdown("### Ladda upp data")
-    sales_file = st.file_uploader("Välj försäljningsdata (TSV)", type=["tsv", "txt"], key="sales_data")
-    budget_file = st.file_uploader("Välj budgetdata (TSV)", type=["tsv", "txt"], key="budget_data")
+st.markdown("### Ladda upp data")
+sales_file = st.file_uploader("Välj försäljningsdata (CSV/TSV)", type=["csv", "tsv", "txt"], key="sales_data")
+budget_file = st.file_uploader("Välj budgetdata (CSV/TSV)", type=["csv", "tsv", "txt"], key="budget_data")
     
     st.markdown("### Prognosalternativ")
     forecast_months = st.slider("Antal månader att prognostisera", min_value=1, max_value=12, value=3)
@@ -1043,9 +1043,12 @@ def main():
     message_container = st.container()
     
     # Hantera filuppladdningar
-    if sales_file:
-        try:
-            sales_data = pd.read_csv(sales_file, sep='\t', encoding='utf-8')
+if sales_file:
+    try:
+        # Detektera filtyp baserat på filändelse
+        file_extension = sales_file.name.split('.')[-1].lower()
+        separator = ',' if file_extension == 'csv' else '\t'
+        sales_data = pd.read_csv(sales_file, sep=separator, encoding='utf-8')
             
             # Validera försäljningsdata
             required_cols = ['Säljkanal', 'ÅrMånad', 'Fakt. Belopp']
@@ -1075,9 +1078,12 @@ def main():
             with message_container:
                 st.error(f"Fel vid inläsning av försäljningsdata: {str(e)}")
     
-    if budget_file:
-        try:
-            budget_data = pd.read_csv(budget_file, sep='\t', encoding='utf-8')
+if budget_file:
+    try:
+        # Detektera filtyp baserat på filändelse
+        file_extension = budget_file.name.split('.')[-1].lower()
+        separator = ',' if file_extension == 'csv' else '\t'
+        budget_data = pd.read_csv(budget_file, sep=separator, encoding='utf-8')
             
             # Validera budgetdata
             required_cols = ['Säljkanal', 'År']
@@ -1149,8 +1155,8 @@ def main():
         <h3>Välkommen till PiwaFood Budgetprognosverktyg!</h3>
         <p>För att komma igång:</p>
         <ol>
-        <li>Ladda upp försäljningsdata (TSV-format) från Qlik Sense via sidofältet.</li>
-        <li>Valfritt: Ladda upp budgetdata (TSV-format) för jämförelse.</li>
+        <li>Ladda upp försäljningsdata (CSV eller TSV-format) från Qlik Sense via sidofältet.</li>
+        <li>Valfritt: Ladda upp budgetdata (CSV eller TSV-format) för jämförelse.</li>
         <li>Justera inställningarna för prognosen i sidofältet.</li>
         <li>Klicka på "Generera försäljningsprognos".</li>
         </ol>
