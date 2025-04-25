@@ -1085,25 +1085,25 @@ if budget_file:
         separator = ',' if file_extension == 'csv' else '\t'
         budget_data = pd.read_csv(budget_file, sep=separator, encoding='utf-8')
             
-            # Validera budgetdata
-            required_cols = ['Säljkanal', 'År']
-            valid, message = validate_data(budget_data, required_cols, "budgetdata")
+        # Validera budgetdata
+        required_cols = ['Säljkanal', 'År']
+        valid, message = validate_data(budget_data, required_cols, "budgetdata")
+        
+        if valid:
+            # Konvertera År till heltal
+            budget_data['År'] = budget_data['År'].astype(int)
             
-            if valid:
-                # Konvertera År till heltal
-                budget_data['År'] = budget_data['År'].astype(int)
-                
-                # Spara data
-                st.session_state.budget_df = budget_data
-                
-                with message_container:
-                    st.success(f"Budgetdata laddad med {len(budget_data)} rader och {len(budget_data['Säljkanal'].unique())} säljkanaler.")
-            else:
-                with message_container:
-                    st.error(message)
-        except Exception as e:
+            # Spara data
+            st.session_state.budget_df = budget_data
+            
             with message_container:
-                st.error(f"Fel vid inläsning av budgetdata: {str(e)}")
+                st.success(f"Budgetdata laddad med {len(budget_data)} rader och {len(budget_data['Säljkanal'].unique())} säljkanaler.")
+        else:
+            with message_container:
+                st.error(message)
+    except Exception as e:
+        with message_container:
+            st.error(f"Fel vid inläsning av budgetdata: {str(e)}")
     
     # Databearbetning och visualisering
     if st.session_state.data_loaded:
