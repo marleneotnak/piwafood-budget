@@ -84,36 +84,36 @@ st.markdown("### Ladda upp data")
 sales_file = st.file_uploader("Välj försäljningsdata (CSV/TSV)", type=["csv", "tsv", "txt"], key="sales_data")
 budget_file = st.file_uploader("Välj budgetdata (CSV/TSV)", type=["csv", "tsv", "txt"], key="budget_data")
     
-    st.markdown("### Prognosalternativ")
-    forecast_months = st.slider("Antal månader att prognostisera", min_value=1, max_value=12, value=3)
-    model_choice = st.selectbox(
-        "Välj prognosmodell",
-        options=["Linjär Regression", "Random Forest"],
-        index=0
-    )
-    
-    include_seasonality = st.checkbox("Inkludera säsongsvariation", value=True)
-    confidence_interval = st.checkbox("Visa konfidensintervall", value=True)
-    
-    st.markdown("### Visualiseringsalternativ")
-    chart_type = st.selectbox(
-        "Välj diagramtyp",
-        options=["Linje", "Stapel", "Område", "Kombinerat"],
-        index=0
-    )
-    
-    color_theme = st.selectbox(
-        "Välj färgtema",
-        options=["Standard", "PiwaFood", "Blå-grön", "Varm", "Monokrom"],
-        index=1
-    )
-    
-    st.markdown("### Export")
-    export_format = st.selectbox(
-        "Välj exportformat",
-        options=["Excel (.xlsx)", "CSV", "TSV"],
-        index=0
-    )
+st.markdown("### Prognosalternativ")
+forecast_months = st.slider("Antal månader att prognostisera", min_value=1, max_value=12, value=3)
+model_choice = st.selectbox(
+    "Välj prognosmodell",
+    options=["Linjär Regression", "Random Forest"],
+    index=0
+)
+
+include_seasonality = st.checkbox("Inkludera säsongsvariation", value=True)
+confidence_interval = st.checkbox("Visa konfidensintervall", value=True)
+
+st.markdown("### Visualiseringsalternativ")
+chart_type = st.selectbox(
+    "Välj diagramtyp",
+    options=["Linje", "Stapel", "Område", "Kombinerat"],
+    index=0
+)
+
+color_theme = st.selectbox(
+    "Välj färgtema",
+    options=["Standard", "PiwaFood", "Blå-grön", "Varm", "Monokrom"],
+    index=1
+)
+
+st.markdown("### Export")
+export_format = st.selectbox(
+    "Välj exportformat",
+    options=["Excel (.xlsx)", "CSV", "TSV"],
+    index=0
+)
 
 # Färger och teman
 color_schemes = {
