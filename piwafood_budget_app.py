@@ -1050,33 +1050,33 @@ if sales_file:
         separator = ',' if file_extension == 'csv' else '\t'
         sales_data = pd.read_csv(sales_file, sep=separator, encoding='utf-8')
             
-            # Validera försäljningsdata
-            required_cols = ['Säljkanal', 'ÅrMånad', 'Fakt. Belopp']
-            valid, message = validate_data(sales_data, required_cols, "försäljningsdata")
+        # Validera försäljningsdata
+        required_cols = ['Säljkanal', 'ÅrMånad', 'Fakt. Belopp']
+        valid, message = validate_data(sales_data, required_cols, "försäljningsdata")
+        
+        if valid:
+            # Konvertera ÅrMånad till rätt format och skapa datum
+            sales_data['ÅrMånad'] = sales_data['ÅrMånad'].astype(str)
+            sales_data['Datum'] = sales_data['ÅrMånad'].apply(parse_date)
             
-            if valid:
-                # Konvertera ÅrMånad till rätt format och skapa datum
-                sales_data['ÅrMånad'] = sales_data['ÅrMånad'].astype(str)
-                sales_data['Datum'] = sales_data['ÅrMånad'].apply(parse_date)
-                
-                # Konvertera numeriska kolumner
-                for col in ['Fakt. Belopp', 'Fakt. TB']:
-                    if col in sales_data.columns:
-                        sales_data[col] = pd.to_numeric(sales_data[col], errors='coerce')
-                
-                # Sortera och spara data
-                sales_data = sales_data.sort_values(['Säljkanal', 'Datum'])
-                st.session_state.sales_df = sales_data
-                st.session_state.data_loaded = True
-                
-                with message_container:
-                    st.success(f"Försäljningsdata laddad med {len(sales_data)} rader och {len(sales_data['Säljkanal'].unique())} säljkanaler.")
-            else:
-                with message_container:
-                    st.error(message)
-        except Exception as e:
+            # Konvertera numeriska kolumner
+            for col in ['Fakt. Belopp', 'Fakt. TB']:
+                if col in sales_data.columns:
+                    sales_data[col] = pd.to_numeric(sales_data[col], errors='coerce')
+            
+            # Sortera och spara data
+            sales_data = sales_data.sort_values(['Säljkanal', 'Datum'])
+            st.session_state.sales_df = sales_data
+            st.session_state.data_loaded = True
+            
             with message_container:
-                st.error(f"Fel vid inläsning av försäljningsdata: {str(e)}")
+                st.success(f"Försäljningsdata laddad med {len(sales_data)} rader och {len(sales_data['Säljkanal'].unique())} säljkanaler.")
+        else:
+            with message_container:
+                st.error(message)
+    except Exception as e:
+        with message_container:
+            st.error(f"Fel vid inläsning av försäljningsdata: {str(e)}")
     
 if budget_file:
     try:
