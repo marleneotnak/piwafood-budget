@@ -714,7 +714,6 @@ def visualize_data(sales_df, forecast_df, forecast_details, show_confidence, cha
                         delta=f"{forecast_vs_latest:.1f}% vs senaste faktiska"
                     )
                 
-                if 'Budget' in channel_forecast.columns and not channel_forecast['Budget'].isna().all
                 if 'Budget' in channel_forecast.columns and not channel_forecast['Budget'].isna().all():
                     first_budget = channel_forecast['Budget'].iloc[0]
                     budget_diff = ((first_forecast / first_budget) - 1) * 100 if first_budget > 0 else 0
